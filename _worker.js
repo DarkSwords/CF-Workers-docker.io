@@ -5,7 +5,7 @@ let hub_host = 'registry-1.docker.io'
 // Docker认证服务器地址
 const auth_url = 'https://auth.docker.io'
 // 自定义的工作服务器地址
-let workers_url = 'https://你的域名'
+let workers_url = process.env.WORKERS_URL || 'https://你的域名'
 
 let 屏蔽爬虫UA = ['netcraft'];
 
@@ -104,7 +104,8 @@ async function nginx() {
 
 export default {
 	async fetch(request, env, ctx) {
-		const getReqHeader = (key) => request.headers.get(key); // 获取请求头
+		workers_url = process.env.WORKERS_URL || `https://${url.hostname}`;
+		#const getReqHeader = (key) => request.headers.get(key); // 获取请求头
 
 		let url = new URL(request.url); // 解析请求URL
 		const userAgentHeader = request.headers.get('User-Agent');
