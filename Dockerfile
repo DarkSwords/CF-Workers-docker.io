@@ -1,10 +1,20 @@
-FROM node:18-alpine
+# 使用官方的 Node.js 镜像作为基础镜像
+FROM node:14
 
-WORKDIR /app
+# 设置工作目录
+WORKDIR /usr/src/app
 
-COPY _worker.js ./
+# 复制 package.json 和 package-lock.json
+COPY package*.json ./
 
-RUN npm init -y && \
-    npm install @cloudflare/workers-types
+# 安装项目依赖
+RUN npm install
 
-CMD ["node", "_worker.js"]
+# 复制项目文件
+COPY . .
+
+# 暴露应用程序端口
+EXPOSE 8080
+
+# 启动应用程序
+CMD ["node", "src/index.js"]
